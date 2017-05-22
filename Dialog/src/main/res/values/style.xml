@@ -8,10 +8,15 @@
         <item name="android:windowNoTitle">false</item>
         <item name="android:backgroundDimEnabled">true</item>
         <item name="android:windowIsFloating">false</item>
-        <item name="android:windowAnimationStyle">@style/DialogAnimation</item>
+        <item name="android:windowAnimationStyle">@style/SimpleDialog_bottom</item>
     </style>
 
-    <style name="DialogAnimation">
+    <style name="SimpleDialog_center">
+        <item name="android:windowEnterAnimation">@anim/popup_enter</item>
+        <item name="android:windowExitAnimation">@anim/popup_exit</item>
+    </style>
+
+    <style name="SimpleDialog_bottom">
         <item name="android:windowEnterAnimation">@anim/slide_up</item>
         <item name="android:windowExitAnimation">@anim/slide_down</item>
     </style>

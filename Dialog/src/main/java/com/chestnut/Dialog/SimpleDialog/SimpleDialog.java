@@ -26,6 +26,12 @@ import java.util.List;
  *     thanks To:
  *     dependent on:
  *     update log:
+ *          1.  2017年5月21日09:23:25
+ *              完成了基本的功能
+ *          2.  2017年5月22日09:25:57
+ *              修改了部分单词拼写错误
+ *              对不同位置的Dialog进行设置不同的动画
+ *              完成了：API 19（4.4），22（5.1），23（6.0），24（7.0）：虚拟机运行正常
  * </pre>
  */
 
@@ -35,7 +41,7 @@ public class SimpleDialog {
     public static final int POSITION_CENTER = -2;
     @IntDef({POSITION_BOTTOM,POSITION_CENTER})
     @Retention(RetentionPolicy.SOURCE)
-    private @interface POSTION_STYLE {}
+    private @interface POSITION_STYLE {}
 
     private CustomDialog customDialog;
     private int POSITION_DIALOG = POSITION_CENTER;
@@ -53,11 +59,16 @@ public class SimpleDialog {
     /**
      * 构造方法2：传入 Position
      * @param context  上下文
-     * @param positionDialg 位置
+     * @param positionDialog 位置
      */
-    public SimpleDialog(Context context,@POSTION_STYLE int positionDialg) {
+    public SimpleDialog(Context context,@POSITION_STYLE int positionDialog) {
         this(context);
-        this.POSITION_DIALOG = positionDialg;
+        this.POSITION_DIALOG = positionDialog;
+    }
+
+    public SimpleDialog setStyle(@POSITION_STYLE int positionDialog) {
+        this.POSITION_DIALOG = positionDialog;
+        return this;
     }
 
     public SimpleDialog setItems(List<String> items) {
@@ -70,13 +81,13 @@ public class SimpleDialog {
         return this;
     }
 
-    public SimpleDialog dimiss() {
+    public SimpleDialog dismiss() {
         customDialog.dismiss();
         return this;
     }
 
-    public SimpleDialog setOnItemClick(OnItemClickListener onItemClickListene) {
-        customDialog.setListener(onItemClickListene);
+    public SimpleDialog setOnItemClick(OnItemClickListener onItemClickListener) {
+        customDialog.setListener(onItemClickListener);
         return this;
     }
 
@@ -130,10 +141,12 @@ public class SimpleDialog {
             switch (POSITION_DIALOG) {
                 case POSITION_BOTTOM:
                     getWindow().setGravity(Gravity.BOTTOM);
+                    getWindow().setWindowAnimations(R.style.SimpleDialog_bottom);
                     width = WindowManager.LayoutParams.MATCH_PARENT;
                     break;
                 case POSITION_CENTER:
                     getWindow().setGravity(Gravity.CENTER);
+                    getWindow().setWindowAnimations(R.style.SimpleDialog_center);
                     break;
             }
             if (arrayAdapter.getCount()>6) {

@@ -1,0 +1,126 @@
+package com.chestnut.Dialog.IconSimpleDialog;
+
+import android.app.Dialog;
+import android.content.Context;
+import android.support.annotation.IntDef;
+import android.support.annotation.NonNull;
+import android.view.View;
+import android.widget.GridView;
+import android.widget.SimpleAdapter;
+
+import com.chestnut.Dialog.R;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * <pre>
+ *     author: Chestnut
+ *     blog  : http://www.jianshu.com/u/a0206b5f4526
+ *     time  : 2017/5/22 15:42
+ *     desc  :
+ *          带有Icon的MD对话框。
+ *     thanks To:
+ *     dependent on:
+ *     update log:
+ * </pre>
+ */
+
+public class IconSimpleDialog {
+
+    public static final int POSITION_BOTTOM = -1;
+    public static final int POSITION_CENTER = -2;
+    @IntDef({POSITION_BOTTOM,POSITION_CENTER})
+    @Retention(RetentionPolicy.SOURCE)
+    private @interface POSITION_STYLE {}
+
+    private CustomDialog customDialog;
+    private int POSITION_DIALOG = POSITION_CENTER;
+    private Context context;
+    
+    /**
+     * 构造方法1：默认为 POSITION_CENTER
+     * @param context 传入上下文
+     */
+    public IconSimpleDialog(Context context) {
+        this.context = context;
+        customDialog = new CustomDialog(context);
+    }
+
+    /**
+     * 构造方法2：传入 Position
+     * @param context  上下文
+     * @param positionDialog 位置
+     */
+    public IconSimpleDialog(Context context,@POSITION_STYLE int positionDialog) {
+        this(context);
+        this.POSITION_DIALOG = positionDialog;
+    }
+
+    public IconSimpleDialog setItems(List<Item> items) {
+        customDialog.setItems(items);
+        return this;
+    }
+
+    public IconSimpleDialog show() {
+        customDialog.show();
+        return this;
+    }
+
+    public IconSimpleDialog dismiss() {
+        customDialog.dismiss();
+        return this;
+    }
+
+    public IconSimpleDialog setOnItemClick(OnItemClickListener onItemClickListener) {
+//        customDialog.setListener(onItemClickListener);
+        return this;
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(IconSimpleDialog simpleDialog, View view, int position);
+    }
+    
+    /**
+     * 重写Dialog
+     */
+    private final class CustomDialog extends Dialog {
+
+        private SimpleAdapter simpleAdapter;
+        private GridView gridView;
+
+        public CustomDialog(@NonNull Context context) {
+            super(context, R.style.SimpleDialog);
+            setContentView(R.layout.com_chestnut_dialog_icon_simpledialog_grid_dapter);
+            setCancelable(true);
+            setCanceledOnTouchOutside(true);
+            gridView = (GridView) findViewById(R.id.gridView);
+        }
+
+        public void setItems(List<Item> items) {
+            List<Map<String,Object>> listItems = new ArrayList<Map<String,Object>>();
+            for (Item i :
+                    items) {
+                Map<String,Object> temp = new HashMap<>();
+                temp.put("imgIcon",i.icon);
+                temp.put("title",i.title);
+                listItems.add(temp);
+            }
+            simpleAdapter = new SimpleAdapter(
+                    context,
+                    listItems,
+                    R.layout.com_chestnut_dialog_icon_gridview_item,
+                    new String[] {"imgIcon","title"},
+                    new int[] {R.id.imageView,R.id.textView});
+            gridView.setAdapter(simpleAdapter);
+        }
+
+        public void show() {
+            super.show();
+        }
+    }
+}

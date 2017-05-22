@@ -24,13 +24,21 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                SimpleDialog simpleDialog = new SimpleDialog(MainActivity.this);
                 List<String> stringList = new ArrayList<String>();
-                for (int i = 0; i < 15; i++) {
+                for (int i = 0; i < 3; i++) {
                     stringList.add("Title:"+i);
                 }
-                simpleDialog.setItems(stringList);
-                simpleDialog.show();
+
+                new SimpleDialog(MainActivity.this)
+                        .setStyle(SimpleDialog.POSITION_CENTER)
+                        .setItems(stringList)
+                        .setOnItemClick(new SimpleDialog.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(SimpleDialog simpleDialog, View view, int position) {
+                                toast.setText("position:"+position).show();
+                            }
+                        })
+                        .show();
             }
         });
         findViewById(R.id.button1).setOnClickListener(new View.OnClickListener() {
@@ -48,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
                             public void onItemClick(SimpleDialog simpleDialog, View view, int position) {
                                 toast.setText("position:"+position).show();
                                 if (position==2) {
-                                    simpleDialog.dimiss();
+                                    simpleDialog.dismiss();
                                 }
                             }
                         })
