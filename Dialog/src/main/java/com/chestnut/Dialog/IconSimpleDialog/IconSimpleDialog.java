@@ -4,9 +4,13 @@ import android.app.Dialog;
 import android.content.Context;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
+import android.view.Gravity;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 
 import com.chestnut.Dialog.R;
 
@@ -66,6 +70,16 @@ public class IconSimpleDialog {
         return this;
     }
 
+    public IconSimpleDialog setTitle(String title) {
+        customDialog.setTitle(title);
+        return this;
+    }
+
+    public IconSimpleDialog setTitleVisibility(boolean isVisibility) {
+        customDialog.setTitleVisibility(isVisibility);
+        return this;
+    }
+
     public IconSimpleDialog show() {
         customDialog.show();
         return this;
@@ -77,12 +91,12 @@ public class IconSimpleDialog {
     }
 
     public IconSimpleDialog setOnItemClick(OnItemClickListener onItemClickListener) {
-//        customDialog.setListener(onItemClickListener);
+        customDialog.setListener(onItemClickListener);
         return this;
     }
 
     public interface OnItemClickListener {
-        void onItemClick(IconSimpleDialog simpleDialog, View view, int position);
+        void onItemClick(IconSimpleDialog simpleDialog, View view, int position,Item item);
     }
     
     /**
@@ -92,6 +106,8 @@ public class IconSimpleDialog {
 
         private SimpleAdapter simpleAdapter;
         private GridView gridView;
+        private List<Item> items;
+        private TextView titleTxt;
 
         public CustomDialog(@NonNull Context context) {
             super(context, R.style.SimpleDialog);
@@ -99,9 +115,11 @@ public class IconSimpleDialog {
             setCancelable(true);
             setCanceledOnTouchOutside(true);
             gridView = (GridView) findViewById(R.id.gridView);
+            titleTxt = (TextView) findViewById(R.id.title);
         }
 
         public void setItems(List<Item> items) {
+            this.items = items;
             List<Map<String,Object>> listItems = new ArrayList<Map<String,Object>>();
             for (Item i :
                     items) {
@@ -119,7 +137,44 @@ public class IconSimpleDialog {
             gridView.setAdapter(simpleAdapter);
         }
 
+        public void setListener(final IconSimpleDialog.OnItemClickListener onItemClickListener) {
+            gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    onItemClickListener.onItemClick(IconSimpleDialog.this,view,i,items.get(i));
+                }
+            });
+        }
+
+        public void setTitle(String title) {
+            this.titleTxt.setText(title);
+        }
+
+        public void setTitleVisibility(boolean isVisibility) {
+            this.titleTxt.setVisibility(isVisibility?View.VISIBLE:View.INVISIBLE);
+
+        }
+
         public void show() {
+            int width = WindowManager.LayoutParams.WRAP_CONTENT;
+            int height = WindowManager.LayoutParams.WRAP_CONTENT;
+            switch (POSITION_DIALOG) {
+                case POSITION_BOTTOM:
+                    getWindow().setGravity(Gravity.BOTTOM);
+                    getWindow().setWindowAnimations(R.style.SimpleDialog_bottom);
+                    width = WindowManager.LayoutParams.MATCH_PARENT;
+                    break;
+                case POSITION_CENTER:
+                    getWindow().setGravity(Gravity.CENTER);
+                    getWindow().setWindowAnimations(R.style.SimpleDialog_center);
+                    break;
+            }
+            if (simpleAdapter.getCount()>7) {
+                getWindow().setLayout(width, context.getResources().getDisplayMetrics().heightPixels/2);
+            }
+            else {
+                getWindow().setLayout(width, height);
+            }
             super.show();
         }
     }
