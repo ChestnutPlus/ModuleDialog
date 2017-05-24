@@ -33,7 +33,9 @@ import java.util.List;
  *              2）对不同位置的Dialog进行设置不同的动画
  *              3）完成了：API 19（4.4），22（5.1），23（6.0），24（7.0）：虚拟机运行正常
  *          3.  2017年5月24日15:33:49
- *              对OnItem回调进行扩展，增加返回str
+ *              1）对OnItem回调进行扩展，增加返回str
+ *              2）增加了点击效果，确保不受app/theme影响
+ *
  * </pre>
  */
 
@@ -120,7 +122,7 @@ public class SimpleDialog {
         public CustomDialog addItems(List<String> items) {
             arrayAdapter = new ArrayAdapter<String>(
                     context,
-                    android.R.layout.simple_list_item_1,
+                    R.layout.com_chestnut_dialog_simpledialog_item,
                     android.R.id.text1,
                     items);
             listView.setAdapter(arrayAdapter);
