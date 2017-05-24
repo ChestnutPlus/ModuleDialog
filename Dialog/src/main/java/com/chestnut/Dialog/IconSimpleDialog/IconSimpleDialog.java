@@ -31,6 +31,11 @@ import java.util.Map;
  *     thanks To:
  *     dependent on:
  *     update log:
+ *          1.  2017年5月23日14:43:10 完成第一版
+ *          2.  2017年5月24日14:43:21
+ *              1）增加了点击效果，确保不受app/theme影响
+ *              2）增加了设置行数的API
+ *              3）测试通过：4.4，5.1，6.0，7.0
  * </pre>
  */
 
@@ -72,6 +77,11 @@ public class IconSimpleDialog {
 
     public IconSimpleDialog setTitle(String title) {
         customDialog.setTitle(title);
+        return this;
+    }
+
+    public IconSimpleDialog setNumColumns(int numColumns) {
+        customDialog.setNumColumns(numColumns);
         return this;
     }
 
@@ -151,8 +161,11 @@ public class IconSimpleDialog {
         }
 
         public void setTitleVisibility(boolean isVisibility) {
-            this.titleTxt.setVisibility(isVisibility?View.VISIBLE:View.INVISIBLE);
+            this.titleTxt.setVisibility(isVisibility?View.VISIBLE:View.GONE);
+        }
 
+        public void setNumColumns(int numColumns) {
+            gridView.setNumColumns(numColumns);
         }
 
         public void show() {

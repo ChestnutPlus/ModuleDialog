@@ -29,9 +29,11 @@ import java.util.List;
  *          1.  2017年5月21日09:23:25
  *              完成了基本的功能
  *          2.  2017年5月22日09:25:57
- *              修改了部分单词拼写错误
- *              对不同位置的Dialog进行设置不同的动画
- *              完成了：API 19（4.4），22（5.1），23（6.0），24（7.0）：虚拟机运行正常
+ *              1）修改了部分单词拼写错误
+ *              2）对不同位置的Dialog进行设置不同的动画
+ *              3）完成了：API 19（4.4），22（5.1），23（6.0），24（7.0）：虚拟机运行正常
+ *          3.  2017年5月24日15:33:49
+ *              对OnItem回调进行扩展，增加返回str
  * </pre>
  */
 
@@ -92,7 +94,7 @@ public class SimpleDialog {
     }
 
     public interface OnItemClickListener {
-        void onItemClick(SimpleDialog simpleDialog,View view,int position);
+        void onItemClick(SimpleDialog simpleDialog,View view,int position, String string);
     }
 
     /**
@@ -129,7 +131,7 @@ public class SimpleDialog {
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    onItemClickListener.onItemClick(SimpleDialog.this,view,i);
+                    onItemClickListener.onItemClick(SimpleDialog.this,view,i,arrayAdapter.getItem(i));
                 }
             });
         }

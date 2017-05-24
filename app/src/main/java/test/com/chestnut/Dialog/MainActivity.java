@@ -8,6 +8,7 @@ import android.widget.Toast;
 import com.chestnut.Common.ui.Toastc;
 import com.chestnut.Dialog.IconSimpleDialog.IconSimpleDialog;
 import com.chestnut.Dialog.IconSimpleDialog.Item;
+import com.chestnut.Dialog.SimpleDialog.SimpleDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
                 items.add(new Item("QQ好友",R.mipmap.ic_launcher));
                 items.add(new Item("QQ空间",R.mipmap.ic_launcher));
                 new IconSimpleDialog(MainActivity.this,IconSimpleDialog.POSITION_BOTTOM)
+                        .setNumColumns(4)
                         .setItems(items)
                         .setTitleVisibility(true)
                         .setTitle("王尼玛测试")
@@ -67,6 +69,48 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void onItemClick(IconSimpleDialog simpleDialog, View view, int position, Item item) {
                                 toast.setText(item.title).show();
+                                if (position==2) {
+                                    simpleDialog.dismiss();
+                                }
+                            }
+                        })
+                        .show();
+            }
+        });
+        findViewById(R.id.button2).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                List<String> strings = new ArrayList<String>();
+                for (int i=0; i<10; i++) {
+                    strings.add("i:"+i);
+                }
+                new SimpleDialog(MainActivity.this,SimpleDialog.POSITION_CENTER)
+                        .setItems(strings)
+                        .setOnItemClick(new SimpleDialog.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(SimpleDialog simpleDialog, View view, int position, String s) {
+                                toast.setText(s).show();
+                                if (position==2) {
+                                    simpleDialog.dismiss();
+                                }
+                            }
+                        })
+                        .show();
+            }
+        });
+        findViewById(R.id.button3).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                List<String> strings = new ArrayList<String>();
+                for (int i=0; i<10; i++) {
+                    strings.add("i:"+i);
+                }
+                new SimpleDialog(MainActivity.this,SimpleDialog.POSITION_BOTTOM)
+                        .setItems(strings)
+                        .setOnItemClick(new SimpleDialog.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(SimpleDialog simpleDialog, View view, int position, String s) {
+                                toast.setText(s).show();
                                 if (position==2) {
                                     simpleDialog.dismiss();
                                 }

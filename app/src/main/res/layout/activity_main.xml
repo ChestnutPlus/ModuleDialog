@@ -16,18 +16,36 @@
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="center"
-        android:layout_marginTop="103dp"
         android:layout_below="@+id/textView"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="53dp"
+        android:text="IconSimple_center" />
 
     <Button
         android:id="@+id/button1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="bottom"
-        android:layout_below="@+id/button"
         android:layout_alignStart="@+id/button"
-        android:layout_marginTop="39dp" />
+        android:layout_below="@+id/button"
+        android:layout_marginTop="23dp"
+        android:text="IconSimple_bottom" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="21dp"
+        android:text="Simple_center"
+        android:layout_below="@+id/button1"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Simple_bottom"
+        android:layout_below="@+id/button2"
+        android:layout_alignStart="@+id/button2"
+        android:layout_marginTop="23dp" />
 
 </RelativeLayout>

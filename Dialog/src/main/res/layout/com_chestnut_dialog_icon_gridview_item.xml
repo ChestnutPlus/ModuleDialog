@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="10dp"
     android:orientation="vertical"
+    android:background="@drawable/touch_bg"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <ImageView
@@ -14,7 +15,7 @@
     <TextView
         android:textSize="12sp"
         android:gravity="center"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:layout_gravity="center"
         android:id="@+id/textView"
         android:textColor="@android:color/black"
