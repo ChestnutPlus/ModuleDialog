@@ -151,10 +151,11 @@ public class SimpleDialog {
                 case POSITION_CENTER:
                     getWindow().setGravity(Gravity.CENTER);
                     getWindow().setWindowAnimations(R.style.SimpleDialog_center);
+                    width = context.getResources().getDisplayMetrics().widthPixels * 9 / 12;
                     break;
             }
             if (arrayAdapter.getCount()>6) {
-                getWindow().setLayout(width, context.getResources().getDisplayMetrics().heightPixels/2);
+                getWindow().setLayout(width, context.getResources().getDisplayMetrics().heightPixels*5/12);
             }
             else {
                 getWindow().setLayout(width, height);

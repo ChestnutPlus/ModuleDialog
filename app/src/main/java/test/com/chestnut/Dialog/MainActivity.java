@@ -9,9 +9,16 @@ import com.chestnut.Common.ui.Toastc;
 import com.chestnut.Dialog.IconSimpleDialog.IconSimpleDialog;
 import com.chestnut.Dialog.IconSimpleDialog.Item;
 import com.chestnut.Dialog.SimpleDialog.SimpleDialog;
+import com.chestnut.ProgressBar.LoadingBar.Loading;
+import com.chestnut.ProgressBar.NumLoading.NumLoading;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -22,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         toast = new Toastc(this, Toast.LENGTH_LONG);
+        numLoading = new NumLoading(MainActivity.this);
         findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -119,5 +127,31 @@ public class MainActivity extends AppCompatActivity {
                         .show();
             }
         });
+        findViewById(R.id.button4).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new Loading(MainActivity.this)
+                        .show();
+            }
+        });
+        findViewById(R.id.button5).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                numLoading.setTitle("王尼玛：")
+                        .setTitleVisibility(true)
+                        .setProgressVisibility(true)
+                        .show();
+                Observable.interval(1, TimeUnit.SECONDS)
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Action1<Long>() {
+                            @Override
+                            public void call(Long aLong) {
+                                numLoading.setProgress(aLong.intValue());
+                            }
+                        });
+            }
+        });
     }
+
+    private NumLoading numLoading;
 }
