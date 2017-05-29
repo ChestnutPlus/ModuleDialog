@@ -8,6 +8,7 @@ import android.widget.Toast;
 import com.chestnut.Common.ui.Toastc;
 import com.chestnut.Dialog.IconSimpleDialog.IconSimpleDialog;
 import com.chestnut.Dialog.IconSimpleDialog.Item;
+import com.chestnut.Dialog.MsgDialog.MsgDialog;
 import com.chestnut.Dialog.SimpleDialog.SimpleDialog;
 import com.chestnut.ProgressBar.LoadingBar.Loading;
 import com.chestnut.ProgressBar.NumLoading.NumLoading;
@@ -149,6 +150,28 @@ public class MainActivity extends AppCompatActivity {
                                 numLoading.setProgress(aLong.intValue());
                             }
                         });
+            }
+        });
+        findViewById(R.id.button6).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new MsgDialog(MainActivity.this)
+                        .setMsg("这是一条简单的信息")
+                        .setBtnCancel("cancel", new MsgDialog.OnButtonClickListener() {
+                            @Override
+                            public void onButtonClick(MsgDialog msgDialog) {
+                                toast.setText("cancel").show();
+                                msgDialog.dismiss();
+                            }
+                        })
+                        .setBtnOk("ok", new MsgDialog.OnButtonClickListener() {
+                            @Override
+                            public void onButtonClick(MsgDialog msgDialog) {
+                                toast.setText("ok").show();
+                                msgDialog.dismiss();
+                            }
+                        })
+                        .show();
             }
         });
     }
