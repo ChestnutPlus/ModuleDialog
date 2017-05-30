@@ -142,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
                         .setTitleVisibility(true)
                         .setProgressVisibility(true)
                         .show();
-                Observable.interval(1, TimeUnit.SECONDS)
+                Observable.interval(200, TimeUnit.MILLISECONDS)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(new Action1<Long>() {
                             @Override

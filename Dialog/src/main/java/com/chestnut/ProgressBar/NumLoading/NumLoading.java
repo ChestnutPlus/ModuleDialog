@@ -61,13 +61,12 @@ public class NumLoading extends Dialog{
     }
 
     public NumLoading setProgress(int progress) {
-        this.progressTxt.setText(progress+"%");
         if (progress<0)
-            this.progressBar.setProgress(0);
+            progress=0;
         else if (progress>100)
-            this.progressBar.setProgress(100);
-        else
-            this.progressBar.setProgress(progress);
+            progress=100;
+        this.progressBar.setProgress(progress);
+        this.progressTxt.setText(progress+"%");
         return this;
     }
 }
