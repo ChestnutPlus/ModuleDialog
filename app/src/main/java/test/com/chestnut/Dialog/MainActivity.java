@@ -156,21 +156,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 new MsgDialog(MainActivity.this)
+                        .setTitle("Title")
                         .setMsg("这是一条简单的信息")
-                        .setBtnCancel("cancel", new MsgDialog.OnButtonClickListener() {
-                            @Override
-                            public void onButtonClick(MsgDialog msgDialog) {
-                                toast.setText("cancel").show();
-                                msgDialog.dismiss();
-                            }
-                        })
-                        .setBtnOk("ok", new MsgDialog.OnButtonClickListener() {
-                            @Override
-                            public void onButtonClick(MsgDialog msgDialog) {
-                                toast.setText("ok").show();
-                                msgDialog.dismiss();
-                            }
-                        })
+                        .setBtnCancel("cancel", null)
+                        .setBtnOk("ok", null)
                         .show();
             }
         });

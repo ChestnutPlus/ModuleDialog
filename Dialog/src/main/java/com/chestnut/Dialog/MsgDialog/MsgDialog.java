@@ -44,6 +44,11 @@ public class MsgDialog {
         return this;
     }
 
+    public MsgDialog setTitle(String txt) {
+        customDialog.setTitle(txt);
+        return this;
+    }
+
     public MsgDialog setBtnOk(String txt, OnButtonClickListener buttonClickListener) {
         customDialog.setBtnOk(txt, buttonClickListener);
         return this;
@@ -63,6 +68,7 @@ public class MsgDialog {
         private TextView btnOk;
         private TextView btnCancel;
         private TextView msg;
+        private TextView title;
 
         /**
          *  初始化：进行Dialog的风格设置等等
@@ -79,10 +85,16 @@ public class MsgDialog {
             btnOk = (TextView) findViewById(R.id.btn_ok);
             btnCancel = (TextView) findViewById(R.id.btn_cancel);
             msg = (TextView) findViewById(R.id.txt_msg);
+            title = (TextView) findViewById(R.id.txt_title);
         }
 
         public void setMsg(String txt) {
             msg.setText(txt);
+        }
+
+        public void setTitle(String txt) {
+            title.setVisibility(View.VISIBLE);
+            title.setText(txt);
         }
 
         public void setBtnOk(String txt, final OnButtonClickListener buttonClickListener) {
@@ -91,7 +103,8 @@ public class MsgDialog {
             btnOk.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    buttonClickListener.onButtonClick(MsgDialog.this);
+                    if (buttonClickListener!=null)
+                        buttonClickListener.onButtonClick(MsgDialog.this);
                 }
             });
         }
@@ -102,7 +115,8 @@ public class MsgDialog {
             btnCancel.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    buttonClickListener.onButtonClick(MsgDialog.this);
+                    if (buttonClickListener!=null)
+                        buttonClickListener.onButtonClick(MsgDialog.this);
                 }
             });
         }
