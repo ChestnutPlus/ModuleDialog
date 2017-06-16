@@ -2,6 +2,7 @@ package com.chestnut.Dialog.MsgDialog;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.annotation.NonNull;
 import android.view.Gravity;
 import android.view.View;
@@ -9,6 +10,9 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.chestnut.Dialog.R;
+
+import rx.Observable;
+import rx.Subscriber;
 
 /**
  * <pre>
@@ -20,15 +24,48 @@ import com.chestnut.Dialog.R;
  *     thanks To:
  *     dependent on:
  *     update log:
+ *          2017年6月16日22:52:52
+ *              1.  增加RxShow(),调整内部API。——栗子
  * </pre>
  */
 
 public class MsgDialog {
 
+    public static final int RX_USER_CLICK_OK = -1;
+    public static final int RX_USER_CLICK_CANCEL = -2;
+    public static final int RX_USER_CANCEL = -3;
+
     private CustomDialog customDialog;
 
     public MsgDialog(Context context) {
         customDialog = new CustomDialog(context);
+    }
+
+    public Observable<RxDialogBean> rxShow() {
+        return Observable.create(new Observable.OnSubscribe<RxDialogBean>() {
+            @Override
+            public void call(final Subscriber<? super RxDialogBean> subscriber) {
+                setBtnCancel(null, new OnButtonClickListener() {
+                    @Override
+                    public void onButtonClick(MsgDialog msgDialog) {
+                        subscriber.onNext(new RxDialogBean(RX_USER_CLICK_CANCEL,msgDialog));
+                    }
+                });
+                setBtnOk(null, new OnButtonClickListener() {
+                    @Override
+                    public void onButtonClick(MsgDialog msgDialog) {
+                        subscriber.onNext(new RxDialogBean(RX_USER_CLICK_OK,msgDialog));
+                    }
+                });
+                customDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialogInterface) {
+                        subscriber.onNext(new RxDialogBean(RX_USER_CANCEL,MsgDialog.this));
+                    }
+                });
+                show();
+            }
+        });
     }
 
     public void show() {
@@ -40,22 +77,43 @@ public class MsgDialog {
     }
 
     public MsgDialog setMsg(String txt) {
-        customDialog.setMsg(txt);
+        customDialog.msg.setText(txt);
         return this;
     }
 
     public MsgDialog setTitle(String txt) {
-        customDialog.setTitle(txt);
+        customDialog.title.setVisibility(View.VISIBLE);
+        customDialog.title.setText(txt);
         return this;
     }
 
-    public MsgDialog setBtnOk(String txt, OnButtonClickListener buttonClickListener) {
-        customDialog.setBtnOk(txt, buttonClickListener);
+    public MsgDialog setBtnOk(String txt,final OnButtonClickListener buttonClickListener) {
+        if (txt!=null) {
+            customDialog.btnOk.setText(txt);
+            customDialog.btnOk.setVisibility(View.VISIBLE);
+        }
+        if (buttonClickListener!=null)
+            customDialog.btnOk.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    buttonClickListener.onButtonClick(MsgDialog.this);
+                }
+            });
         return this;
     }
 
-    public MsgDialog setBtnCancel(String txt, OnButtonClickListener buttonClickListener) {
-        customDialog.setBtnCancel(txt, buttonClickListener);
+    public MsgDialog setBtnCancel(String txt,final OnButtonClickListener buttonClickListener) {
+        if (txt!=null) {
+            customDialog.btnCancel.setVisibility(View.VISIBLE);
+            customDialog.btnCancel.setText(txt);
+        }
+        if (buttonClickListener!=null)
+            customDialog.btnCancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    buttonClickListener.onButtonClick(MsgDialog.this);
+                }
+            });
         return this;
     }
 
@@ -63,18 +121,14 @@ public class MsgDialog {
         void onButtonClick(MsgDialog msgDialog);
     }
 
-    private final class CustomDialog extends Dialog {
+    private class CustomDialog extends Dialog {
 
-        private TextView btnOk;
-        private TextView btnCancel;
-        private TextView msg;
-        private TextView title;
+        TextView btnOk;
+        TextView btnCancel;
+        TextView msg;
+        TextView title;
 
-        /**
-         *  初始化：进行Dialog的风格设置等等
-         * @param context  上下文
-         */
-        public CustomDialog(@NonNull Context context) {
+        CustomDialog(@NonNull Context context) {
             super(context, R.style.SimpleDialog);
             setContentView(R.layout.com_chestnut_dialog_msg_dialog);
             setCancelable(true);
@@ -87,38 +141,14 @@ public class MsgDialog {
             msg = (TextView) findViewById(R.id.txt_msg);
             title = (TextView) findViewById(R.id.txt_title);
         }
+    }
 
-        public void setMsg(String txt) {
-            msg.setText(txt);
-        }
-
-        public void setTitle(String txt) {
-            title.setVisibility(View.VISIBLE);
-            title.setText(txt);
-        }
-
-        public void setBtnOk(String txt, final OnButtonClickListener buttonClickListener) {
-            btnOk.setVisibility(View.VISIBLE);
-            btnOk.setText(txt);
-            btnOk.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (buttonClickListener!=null)
-                        buttonClickListener.onButtonClick(MsgDialog.this);
-                }
-            });
-        }
-
-        public void setBtnCancel(String txt, final OnButtonClickListener buttonClickListener) {
-            btnCancel.setVisibility(View.VISIBLE);
-            btnCancel.setText(txt);
-            btnCancel.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (buttonClickListener!=null)
-                        buttonClickListener.onButtonClick(MsgDialog.this);
-                }
-            });
+    public class RxDialogBean {
+        public int RX_TYPE;
+        public MsgDialog msgDialog;
+        public RxDialogBean(int RX_TYPE, MsgDialog msgDialog) {
+            this.RX_TYPE = RX_TYPE;
+            this.msgDialog = msgDialog;
         }
     }
 }

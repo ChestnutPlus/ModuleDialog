@@ -24,6 +24,8 @@ import rx.functions.Action1;
 public class MainActivity extends AppCompatActivity {
 
     private Toastc toast = null;
+    private boolean OpenLog = true;
+    private String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -161,6 +163,34 @@ public class MainActivity extends AppCompatActivity {
                         .setBtnCancel("cancel", null)
                         .setBtnOk("ok", null)
                         .show();
+//                new MsgDialog(MainActivity.this)
+//                        .setTitle("Title")
+//                        .setMsg("这是一条简单的信息")
+//                        .setBtnCancel("cancel", null)
+//                        .setBtnOk("ok",null)
+//                        .rxShow()
+//                        .observeOn(AndroidSchedulers.mainThread())
+//                        .subscribe(new Action1<MsgDialog.RxDialogBean>() {
+//                            @Override
+//                            public void call(MsgDialog.RxDialogBean rxDialogBean) {
+//                                switch (rxDialogBean.RX_TYPE) {
+//                                    case MsgDialog.RX_USER_CANCEL:
+//                                        LogUtils.e(OpenLog,TAG,"RX_USER_CANCEL");
+//                                        toast.setText("RX_USER_CANCEL").show();
+//                                        break;
+//                                    case MsgDialog.RX_USER_CLICK_CANCEL:
+//                                        LogUtils.e(OpenLog,TAG,"RX_USER_CLICK_CANCEL");
+//                                        toast.setText("RX_USER_CLICK_CANCEL").show();
+//                                        rxDialogBean.msgDialog.dismiss();
+//                                        break;
+//                                    case MsgDialog.RX_USER_CLICK_OK:
+//                                        LogUtils.e(OpenLog,TAG,"RX_USER_CLICK_OK");
+//                                        toast.setText("RX_USER_CLICK_OK").show();
+//                                        rxDialogBean.msgDialog.dismiss();
+//                                        break;
+//                                }
+//                            }
+//                        });
             }
         });
     }
