@@ -12,7 +12,7 @@ import com.chestnut.Dialog.R;
  *     author: Chestnut
  *     blog  : http://www.jianshu.com/u/a0206b5f4526
  *     time  : 2017/5/24 22:54
- *     desc  :
+ *     desc  :  完成了一个简单的loading，不带文字
  *     thanks To:
  *     dependent on:
  *     update log:
