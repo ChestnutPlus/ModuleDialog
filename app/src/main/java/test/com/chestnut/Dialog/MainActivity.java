@@ -1,5 +1,6 @@
 package test.com.chestnut.Dialog;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -9,7 +10,10 @@ import com.chestnut.Common.ui.Toastc;
 import com.chestnut.Dialog.IconSimpleDialog.IconSimpleDialog;
 import com.chestnut.Dialog.IconSimpleDialog.Item;
 import com.chestnut.Dialog.MsgDialog.MsgDialog;
+import com.chestnut.Dialog.OnBtnClickListener;
+import com.chestnut.Dialog.RxDialogBean;
 import com.chestnut.Dialog.SimpleDialog.SimpleDialog;
+import com.chestnut.Dialog.XAlertDialog.XAlertDialog;
 import com.chestnut.ProgressBar.LoadingBar.Loading;
 import com.chestnut.ProgressBar.NumLoading.NumLoading;
 
@@ -160,37 +164,41 @@ public class MainActivity extends AppCompatActivity {
                 new MsgDialog(MainActivity.this)
                         .setTitle("Title")
                         .setMsg("这是一条简单的信息")
-                        .setBtnCancel("cancel", null)
-                        .setBtnOk("ok", null)
                         .show();
-//                new MsgDialog(MainActivity.this)
-//                        .setTitle("Title")
-//                        .setMsg("这是一条简单的信息")
-//                        .setBtnCancel("cancel", null)
-//                        .setBtnOk("ok",null)
-//                        .rxShow()
-//                        .observeOn(AndroidSchedulers.mainThread())
-//                        .subscribe(new Action1<MsgDialog.RxDialogBean>() {
-//                            @Override
-//                            public void call(MsgDialog.RxDialogBean rxDialogBean) {
-//                                switch (rxDialogBean.RX_TYPE) {
-//                                    case MsgDialog.RX_USER_CANCEL:
-//                                        LogUtils.e(OpenLog,TAG,"RX_USER_CANCEL");
-//                                        toast.setText("RX_USER_CANCEL").show();
-//                                        break;
-//                                    case MsgDialog.RX_USER_CLICK_CANCEL:
-//                                        LogUtils.e(OpenLog,TAG,"RX_USER_CLICK_CANCEL");
-//                                        toast.setText("RX_USER_CLICK_CANCEL").show();
-//                                        rxDialogBean.msgDialog.dismiss();
-//                                        break;
-//                                    case MsgDialog.RX_USER_CLICK_OK:
-//                                        LogUtils.e(OpenLog,TAG,"RX_USER_CLICK_OK");
-//                                        toast.setText("RX_USER_CLICK_OK").show();
-//                                        rxDialogBean.msgDialog.dismiss();
-//                                        break;
-//                                }
-//                            }
-//                        });
+            }
+        });
+        findViewById(R.id.button7).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new XAlertDialog(MainActivity.this,XAlertDialog.TYPE_ERROR)
+                        .setTitle("title")
+                        .setBtnOkListener(new OnBtnClickListener() {
+                            @Override
+                            public void onButtonClick(Dialog dialog) {
+                                toast.setText("setBtnOkListener").show();
+                            }
+                        })
+                        .setBtnCancelListener(new OnBtnClickListener() {
+                            @Override
+                            public void onButtonClick(Dialog dialog) {
+                                toast.setText("onButtonClick").show();
+                            }
+                        })
+                        .setMsg("洗洗就睡了空间的风口浪尖势力扩大解放了放假了深刻搭街坊拉萨角度来看分解落实贷款")
+                        .rxShow()
+                        .subscribe(new Action1<RxDialogBean>() {
+                            @Override
+                            public void call(RxDialogBean rxDialogBean) {
+                                switch (rxDialogBean.rxStatus) {
+                                    case RxDialogBean.RX_USER_CLICK_CANCEL:
+                                        toast.setText("RX_USER_CLICK_CANCEL").show();
+                                        break;
+                                    case RxDialogBean.RX_USER_CLICK_OK:
+                                        toast.setText("RX_USER_CLICK_OK").show();
+                                        break;
+                                }
+                            }
+                        });
             }
         });
     }

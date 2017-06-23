@@ -35,7 +35,9 @@ import java.util.List;
  *          2017年5月24日15:33:49  ——栗子
  *              1）对OnItem回调进行扩展，增加返回str
  *              2）增加了点击效果，确保不受app/theme影响
- *          2017年6月16日23:00:33  ——栗子
+ *          2017年6月23日10:41:39  ——栗子
+ *              1）修改了内部类的访问权限
+ *              2）干掉编译器的所有黄色Warning
  *
  * </pre>
  */
@@ -109,10 +111,11 @@ public class SimpleDialog {
         private ArrayAdapter<String> arrayAdapter;
 
         /**
-         *  初始化：进行Dialog的风格设置等等
-         * @param context  上下文
+         * 初始化：进行Dialog的风格设置等等
+         *
+         * @param context 上下文
          */
-        public CustomDialog(@NonNull Context context) {
+        CustomDialog(@NonNull Context context) {
             super(context, R.style.SimpleDialog);
             setContentView(R.layout.com_chestnut_dialog_simpledialog_listadapter);
             setCancelable(true);
@@ -120,8 +123,8 @@ public class SimpleDialog {
             listView = (ListView) this.findViewById(R.id.listView);
         }
 
-        public CustomDialog addItems(List<String> items) {
-            arrayAdapter = new ArrayAdapter<String>(
+        CustomDialog addItems(List<String> items) {
+            arrayAdapter = new ArrayAdapter<>(
                     context,
                     R.layout.com_chestnut_dialog_simpledialog_item,
                     android.R.id.text1,
@@ -130,11 +133,11 @@ public class SimpleDialog {
             return this;
         }
 
-        public void setListener(final OnItemClickListener onItemClickListener) {
+        void setListener(final OnItemClickListener onItemClickListener) {
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    onItemClickListener.onItemClick(SimpleDialog.this,view,i,arrayAdapter.getItem(i));
+                    onItemClickListener.onItemClick(SimpleDialog.this, view, i, arrayAdapter.getItem(i));
                 }
             });
         }
@@ -145,23 +148,31 @@ public class SimpleDialog {
             int height = WindowManager.LayoutParams.WRAP_CONTENT;
             switch (POSITION_DIALOG) {
                 case POSITION_BOTTOM:
-                    getWindow().setGravity(Gravity.BOTTOM);
-                    getWindow().setWindowAnimations(R.style.SimpleDialog_bottom);
-                    width = WindowManager.LayoutParams.MATCH_PARENT;
+                    if (getWindow() != null) {
+                        getWindow().setGravity(Gravity.BOTTOM);
+                        getWindow().setWindowAnimations(R.style.SimpleDialog_bottom);
+                        width = WindowManager.LayoutParams.MATCH_PARENT;
+                    }
                     break;
                 case POSITION_CENTER:
-                    getWindow().setGravity(Gravity.CENTER);
-                    getWindow().setWindowAnimations(R.style.SimpleDialog_center);
-                    width = context.getResources().getDisplayMetrics().widthPixels * 9 / 12;
+                    if (getWindow() != null) {
+                        getWindow().setGravity(Gravity.CENTER);
+                        getWindow().setWindowAnimations(R.style.SimpleDialog_center);
+                        width = context.getResources().getDisplayMetrics().widthPixels * 9 / 12;
+                    }
                     break;
             }
-            if (arrayAdapter.getCount()>6) {
-                getWindow().setLayout(width, context.getResources().getDisplayMetrics().heightPixels*5/12);
+            if (arrayAdapter.getCount() > 6) {
+                if (getWindow() != null) {
+                    getWindow().setLayout(width, context.getResources().getDisplayMetrics().heightPixels * 5 / 12);
+                }
+            } else {
+                if (getWindow() != null) {
+                    getWindow().setLayout(width, height);
+                }
+                super.show();
             }
-            else {
-                getWindow().setLayout(width, height);
-            }
-            super.show();
         }
     }
 }
+

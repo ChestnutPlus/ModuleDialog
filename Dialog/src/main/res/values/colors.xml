@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="touch_bg">#fff</color>
+    <color name="divider">#e9c6c5c2</color>
+    <color name="warning_stroke_color">#F8BB86</color>
 </resources>
