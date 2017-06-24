@@ -24,4 +24,14 @@
         <item name="android:windowEnterAnimation">@null</item>
         <item name="android:windowExitAnimation">@anim/xdialog_out</item>
     </style>
+
+    <style name="DialogLoading">
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowAnimationStyle">@style/SimpleDialog_bottom</item>
+    </style>
 </resources>

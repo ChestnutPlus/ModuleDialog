@@ -11,7 +11,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.RotateAnimation;
 import android.view.animation.ScaleAnimation;
-import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -131,6 +130,18 @@ public class XAlertDialog implements XDialog<XAlertDialog>{
     }
 
     @Override
+    public XAlertDialog setCancelable(boolean cancelable) {
+        customDialog.setCancelable(cancelable);
+        return this;
+    }
+
+    @Override
+    public XAlertDialog setCanceledOnTouchOutside(boolean cancelable) {
+        customDialog.setCanceledOnTouchOutside(cancelable);
+        return this;
+    }
+
+    @Override
     public XAlertDialog setBtnOkListener(final OnBtnClickListener onBtnClickListener) {
         if (onBtnClickListener!=null) {
             customDialog.btnOk.setVisibility(View.VISIBLE);
@@ -176,18 +187,6 @@ public class XAlertDialog implements XDialog<XAlertDialog>{
         customDialog.imageView.startAnimation(rotateAnimation);
     }
 
-    private void animationWarning() {
-        customDialog.imageView.setImageResource(R.drawable.xdialog_warning);
-        TranslateAnimation translateAnimation = new TranslateAnimation(
-                Animation.RELATIVE_TO_SELF,-1.0f,
-                Animation.RELATIVE_TO_SELF,0.0f,
-                Animation.RELATIVE_TO_SELF,0.0f,
-                Animation.RELATIVE_TO_SELF,0.0f
-        );
-        translateAnimation.setDuration(500);
-        customDialog.imageView.startAnimation(translateAnimation);
-    }
-
     /*类，接口*/
     private final class CustomDialog extends Dialog {
         ImageView imageView;
@@ -225,7 +224,6 @@ public class XAlertDialog implements XDialog<XAlertDialog>{
                     customDialog.imageView.setVisibility(View.GONE);
                     break;
                 case TYPE_WARNING:
-                    animationWarning();
                     break;
                 case TYPE_ERROR:
                     animationError();

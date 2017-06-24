@@ -93,6 +93,18 @@ public class MsgDialog implements XDialog<MsgDialog>{
     }
 
     @Override
+    public MsgDialog setCancelable(boolean cancelable) {
+        customDialog.setCancelable(cancelable);
+        return this;
+    }
+
+    @Override
+    public MsgDialog setCanceledOnTouchOutside(boolean cancelable) {
+        customDialog.setCanceledOnTouchOutside(true);
+        return this;
+    }
+
+    @Override
     public MsgDialog setBtnOkListener(final OnBtnClickListener onBtnClickListener) {
         if (onBtnClickListener!=null) {
             customDialog.btnOk.setVisibility(View.VISIBLE);

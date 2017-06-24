@@ -22,6 +22,8 @@ public interface XDialog<T> {
     T setMsg(String msg);
     T setBtnOkTxt(String txt);
     T setBtnCancelTxt(String txt);
+    T setCancelable(boolean cancelable);
+    T setCanceledOnTouchOutside(boolean cancelable);
     T setBtnOkListener(OnBtnClickListener onBtnClickListener);
     T setBtnCancelListener(OnBtnClickListener onBtnClickListener);
 }

@@ -9,6 +9,7 @@ import android.widget.Toast;
 import com.chestnut.Common.ui.Toastc;
 import com.chestnut.Dialog.IconSimpleDialog.IconSimpleDialog;
 import com.chestnut.Dialog.IconSimpleDialog.Item;
+import com.chestnut.Dialog.LoadingDialog.LoadingDialog;
 import com.chestnut.Dialog.MsgDialog.MsgDialog;
 import com.chestnut.Dialog.OnBtnClickListener;
 import com.chestnut.Dialog.RxDialogBean;
@@ -16,6 +17,7 @@ import com.chestnut.Dialog.SimpleDialog.SimpleDialog;
 import com.chestnut.Dialog.XAlertDialog.XAlertDialog;
 import com.chestnut.ProgressBar.LoadingBar.Loading;
 import com.chestnut.ProgressBar.NumLoading.NumLoading;
+import com.chestnut.Toast.XAlertToast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -138,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 new Loading(MainActivity.this)
-                        .show();
+                        .show("正在提交订单...");
             }
         });
         findViewById(R.id.button5).setOnClickListener(new View.OnClickListener() {
@@ -240,6 +242,43 @@ public class MainActivity extends AppCompatActivity {
                             }
                         })
                         .setMsg("Messages...")
+                        .show();
+            }
+        });
+        findViewById(R.id.button10).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new XAlertToast(MainActivity.this,XAlertToast.TYPE_SUCCESS)
+                        .show("收货成功！");
+            }
+        });
+        findViewById(R.id.button11).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new XAlertToast(MainActivity.this,XAlertToast.TYPE_ERROR)
+                        .show("收货失败！");
+            }
+        });
+        findViewById(R.id.button12).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new XAlertToast(MainActivity.this,XAlertToast.TYPE_WARNING)
+                        .show("操作警告！");
+            }
+        });
+        findViewById(R.id.button13).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new LoadingDialog(MainActivity.this)
+                        .setCancelable(true)
+                        .show("操作警告！");
+            }
+        });
+        findViewById(R.id.button14).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new LoadingDialog(MainActivity.this)
+                        .setCancelable(true)
                         .show();
             }
         });
