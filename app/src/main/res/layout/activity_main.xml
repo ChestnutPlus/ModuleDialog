@@ -66,8 +66,23 @@
         android:id="@+id/button7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="XAlert_成功"
+        android:layout_below="@+id/button6"/>
+
+    <Button
+        android:id="@+id/button8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/button6"
-        android:layout_centerHorizontal="true"
-        android:text="XAlert" />
+        android:layout_toEndOf="@+id/button7"
+        android:text="XAlert_失败" />
+
+    <Button
+        android:id="@+id/button9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/button6"
+        android:layout_toEndOf="@+id/button8"
+        android:text="XAlert_警告" />
 
 </RelativeLayout>

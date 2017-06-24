@@ -170,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.button7).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new XAlertDialog(MainActivity.this,XAlertDialog.TYPE_ERROR)
+                new XAlertDialog(MainActivity.this,XAlertDialog.TYPE_SUCCESS)
                         .setTitle("title")
                         .setBtnOkListener(new OnBtnClickListener() {
                             @Override
@@ -199,6 +199,48 @@ public class MainActivity extends AppCompatActivity {
                                 }
                             }
                         });
+            }
+        });
+        findViewById(R.id.button8).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new XAlertDialog(MainActivity.this,XAlertDialog.TYPE_ERROR)
+                        .setTitle("Title")
+                        .setBtnOkListener(new OnBtnClickListener() {
+                            @Override
+                            public void onButtonClick(Dialog dialog) {
+                                toast.setText("setBtnOkListener").show();
+                            }
+                        })
+                        .setBtnCancelListener(new OnBtnClickListener() {
+                            @Override
+                            public void onButtonClick(Dialog dialog) {
+                                toast.setText("onButtonClick").show();
+                            }
+                        })
+                        .setMsg("Messages...")
+                        .show();
+            }
+        });
+        findViewById(R.id.button9).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new XAlertDialog(MainActivity.this,XAlertDialog.TYPE_WARNING)
+                        .setTitle("Title")
+                        .setBtnOkListener(new OnBtnClickListener() {
+                            @Override
+                            public void onButtonClick(Dialog dialog) {
+                                toast.setText("setBtnOkListener").show();
+                            }
+                        })
+                        .setBtnCancelListener(new OnBtnClickListener() {
+                            @Override
+                            public void onButtonClick(Dialog dialog) {
+                                toast.setText("onButtonClick").show();
+                            }
+                        })
+                        .setMsg("Messages...")
+                        .show();
             }
         });
     }

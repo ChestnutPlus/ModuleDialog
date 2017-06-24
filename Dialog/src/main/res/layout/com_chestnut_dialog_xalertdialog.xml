@@ -8,18 +8,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
-        android:focusable="true"
-        android:clickable="true"
-        android:background="@drawable/msg_touch_bg"
-        android:id="@+id/img_custom"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="78dp"
-        android:contentDescription="@string/app_name"
-        android:src="@drawable/xdialog_warning"
-        android:visibility="visible"
-        android:padding="12dp"
-        android:scaleType="fitCenter"/>
+        android:layout_height="78dp">
+        <ImageView
+            android:focusable="true"
+            android:clickable="true"
+            android:background="@drawable/msg_touch_bg"
+            android:id="@+id/img_custom"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/xdialog_warning"
+            android:visibility="visible"
+            android:padding="12dp"
+            android:scaleType="fitCenter"/>
+    </LinearLayout>
 
     <LinearLayout
         android:focusable="true"

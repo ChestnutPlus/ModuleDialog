@@ -8,7 +8,10 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.RotateAnimation;
 import android.view.animation.ScaleAnimation;
+import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -54,20 +57,6 @@ public class XAlertDialog implements XDialog<XAlertDialog>{
     private Context context;
 
     /*方法*/
-    private void animationError() {
-        customDialog.imageView.setImageResource(R.drawable.xdialog_error);
-        ScaleAnimation scaleAnimation = new ScaleAnimation(1.0f,2.0f,1.0f,1.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.0f);
-        scaleAnimation.setRepeatCount(1);
-        scaleAnimation.setRepeatMode(Animation.REVERSE);
-        scaleAnimation.setFillAfter(true);
-        scaleAnimation.setDuration(200);
-        customDialog.imageView.startAnimation(scaleAnimation);
-    }
-
-    private void animationSuccess() {
-
-    }
-
     public XAlertDialog(@NonNull Context context) {
         this(context,TYPE_DEFAULT);
     }
@@ -76,6 +65,9 @@ public class XAlertDialog implements XDialog<XAlertDialog>{
         customDialog = new CustomDialog(context);
         ALERT_TYPE = alertType;
         this.context = context;
+        if (customDialog.getWindow()!=null) {
+            customDialog.getWindow().setWindowAnimations(R.style.XAlertDialog);
+        }
     }
 
     @Override
@@ -166,6 +158,36 @@ public class XAlertDialog implements XDialog<XAlertDialog>{
         return this;
     }
 
+    private void animationError() {
+        customDialog.imageView.setImageResource(R.drawable.xdialog_error);
+        ScaleAnimation scaleAnimation = new ScaleAnimation(1.0f,2.0f,1.0f,1.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.0f);
+        scaleAnimation.setRepeatCount(1);
+        scaleAnimation.setRepeatMode(Animation.REVERSE);
+        scaleAnimation.setFillAfter(true);
+        scaleAnimation.setDuration(250);
+        customDialog.imageView.startAnimation(scaleAnimation);
+    }
+
+    private void animationSuccess() {
+        customDialog.imageView.setImageResource(R.drawable.xdialog_success);
+        RotateAnimation rotateAnimation = new RotateAnimation(0,360,Animation.RELATIVE_TO_SELF,0.5f,Animation.RELATIVE_TO_SELF,0.5f);
+        rotateAnimation.setDuration(500);
+        rotateAnimation.setFillAfter(true);
+        customDialog.imageView.startAnimation(rotateAnimation);
+    }
+
+    private void animationWarning() {
+        customDialog.imageView.setImageResource(R.drawable.xdialog_warning);
+        TranslateAnimation translateAnimation = new TranslateAnimation(
+                Animation.RELATIVE_TO_SELF,-1.0f,
+                Animation.RELATIVE_TO_SELF,0.0f,
+                Animation.RELATIVE_TO_SELF,0.0f,
+                Animation.RELATIVE_TO_SELF,0.0f
+        );
+        translateAnimation.setDuration(500);
+        customDialog.imageView.startAnimation(translateAnimation);
+    }
+
     /*类，接口*/
     private final class CustomDialog extends Dialog {
         ImageView imageView;
@@ -192,11 +214,18 @@ public class XAlertDialog implements XDialog<XAlertDialog>{
 
         @Override
         protected void onStart() {
+            //layout Animation
+            if (getWindow()!=null) {
+                AnimationSet animationSet = (AnimationSet) OptAnimationLoader.loadAnimation(getContext(), R.anim.xdialog_in);
+                getWindow().getDecorView().findViewById(android.R.id.content).startAnimation(animationSet);
+            }
+            //img Animation
             switch (ALERT_TYPE) {
                 case TYPE_DEFAULT:
                     customDialog.imageView.setVisibility(View.GONE);
                     break;
                 case TYPE_WARNING:
+                    animationWarning();
                     break;
                 case TYPE_ERROR:
                     animationError();
@@ -205,7 +234,6 @@ public class XAlertDialog implements XDialog<XAlertDialog>{
                     animationSuccess();
                     break;
             }
-            super.onStart();
         }
     }
 }

@@ -170,8 +170,8 @@ public class SimpleDialog {
                 if (getWindow() != null) {
                     getWindow().setLayout(width, height);
                 }
-                super.show();
             }
+            super.show();
         }
     }
 }
