@@ -13,8 +13,13 @@ import com.chestnut.Common.utils.ConvertUtils;
 import com.chestnut.Dialog.R;
 import com.chestnut.Dialog.RxDialogBean;
 
+import java.util.concurrent.TimeUnit;
+
 import rx.Observable;
 import rx.Subscriber;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 
 /**
  * <pre>
@@ -32,6 +37,7 @@ public class LoadingDialog {
 
     private CustomDialog customDialog;
     private Context context;
+    private Subscription overTimeSubscription;
 
     public LoadingDialog(Context context) {
         this.context = context;
@@ -48,7 +54,12 @@ public class LoadingDialog {
         return this;
     }
 
-    public void show(String msg) {
+    /**
+     * 展示Loading
+     * @param msg   msg
+     * @param overTimeSeconds   超时时间
+     */
+    public void show(String msg,int overTimeSeconds) {
         if (msg!=null && msg.length()>0) {
             customDialog.msg.setVisibility(View.VISIBLE);
             customDialog.msg.setText(msg);
@@ -58,21 +69,32 @@ public class LoadingDialog {
             customDialog.msg.setText("");
         }
         customDialog.show();
+        if (overTimeSeconds>0) {
+            overTimeSubscription = Observable.just(customDialog)
+                    .delay(overTimeSeconds, TimeUnit.SECONDS)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Action1<CustomDialog>() {
+                        @Override
+                        public void call(CustomDialog customDialog) {
+                            customDialog.dismiss();
+                        }
+                    });
+        }
     }
-
+    public void show(String msg) {
+        show(msg,0);
+    }
     public void show() {
-        show(null);
+        show(null,0);
     }
-
-    public void dismiss() {
-        customDialog.dismiss();
+    public void show(int overTimeSeconds) {
+        show(null,overTimeSeconds);
     }
 
     public Observable<RxDialogBean> rxShow() {
-        return rxShow(null);
+        return rxShow(null,0);
     }
-
-    public Observable<RxDialogBean> rxShow(final String msg) {
+    public Observable<RxDialogBean> rxShow(final String msg, final int overTimeSeconds) {
         return Observable.create(new Observable.OnSubscribe<RxDialogBean>() {
             @Override
             public void call(final Subscriber<? super RxDialogBean> subscriber) {
@@ -83,9 +105,30 @@ public class LoadingDialog {
                         subscriber.onCompleted();
                     }
                 });
-                show(msg);
+                customDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialogInterface) {
+                        subscriber.onNext(new RxDialogBean(RxDialogBean.RX_USER_CLICK_CANCEL,customDialog));
+                        subscriber.onCompleted();
+                    }
+                });
+                show(msg,overTimeSeconds);
             }
         });
+    }
+    public Observable<RxDialogBean> rxShow(final String msg) {
+        return rxShow(msg,0);
+    }
+    public Observable<RxDialogBean> rxShow(int overTimeSecondes) {
+        return rxShow(null,overTimeSecondes);
+    }
+
+    public void dismiss() {
+        if (overTimeSubscription!=null && !overTimeSubscription.isUnsubscribed()) {
+            overTimeSubscription.unsubscribe();
+            overTimeSubscription = null;
+        }
+        customDialog.dismiss();
     }
 
     private class CustomDialog extends Dialog {

@@ -279,7 +279,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 loadingDialog = new LoadingDialog(MainActivity.this)
                         .setCancelable(true);
-                loadingDialog.rxShow()
+                loadingDialog.rxShow(3)
                         .subscribe(new Action1<RxDialogBean>() {
                             @Override
                             public void call(RxDialogBean rxDialogBean) {
@@ -291,15 +291,6 @@ public class MainActivity extends AppCompatActivity {
                                         toast.setText("RX_USER_CLICK_CANCEL").show();
                                         break;
                                 }
-                            }
-                        });
-                Observable.just(loadingDialog)
-                        .delay(3,TimeUnit.SECONDS)
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Action1<LoadingDialog>() {
-                            @Override
-                            public void call(LoadingDialog loadingDialog) {
-                                loadingDialog.dismiss();
                             }
                         });
             }
