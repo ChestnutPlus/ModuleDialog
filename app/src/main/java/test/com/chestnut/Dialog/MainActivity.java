@@ -277,12 +277,36 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.button14).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new LoadingDialog(MainActivity.this)
-                        .setCancelable(true)
-                        .show();
+                loadingDialog = new LoadingDialog(MainActivity.this)
+                        .setCancelable(true);
+                loadingDialog.rxShow()
+                        .subscribe(new Action1<RxDialogBean>() {
+                            @Override
+                            public void call(RxDialogBean rxDialogBean) {
+                                switch (rxDialogBean.rxStatus) {
+                                    case RxDialogBean.RX_USER_CLICK_OK:
+                                        toast.setText("RX_USER_CLICK_OK").show();
+                                        break;
+                                    case RxDialogBean.RX_USER_CLICK_CANCEL:
+                                        toast.setText("RX_USER_CLICK_CANCEL").show();
+                                        break;
+                                }
+                            }
+                        });
+                Observable.just(loadingDialog)
+                        .delay(3,TimeUnit.SECONDS)
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Action1<LoadingDialog>() {
+                            @Override
+                            public void call(LoadingDialog loadingDialog) {
+                                loadingDialog.dismiss();
+                            }
+                        });
             }
         });
+
     }
 
+    private LoadingDialog loadingDialog;
     private NumLoading numLoading;
 }

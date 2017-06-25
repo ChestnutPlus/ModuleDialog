@@ -2,6 +2,7 @@ package com.chestnut.Dialog.LoadingDialog;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.annotation.NonNull;
 import android.view.Gravity;
 import android.view.View;
@@ -10,6 +11,10 @@ import android.widget.TextView;
 
 import com.chestnut.Common.utils.ConvertUtils;
 import com.chestnut.Dialog.R;
+import com.chestnut.Dialog.RxDialogBean;
+
+import rx.Observable;
+import rx.Subscriber;
 
 /**
  * <pre>
@@ -33,12 +38,6 @@ public class LoadingDialog {
         customDialog = new CustomDialog(context);
     }
 
-    public void show(@NonNull String msg) {
-        customDialog.msg.setVisibility(View.VISIBLE);
-        customDialog.msg.setText(msg);
-        customDialog.show();
-    }
-
     public LoadingDialog setCancelable(boolean cancelable) {
         customDialog.setCancelable(cancelable);
         return this;
@@ -49,12 +48,44 @@ public class LoadingDialog {
         return this;
     }
 
-    public void show() {
+    public void show(String msg) {
+        if (msg!=null && msg.length()>0) {
+            customDialog.msg.setVisibility(View.VISIBLE);
+            customDialog.msg.setText(msg);
+        }
+        else {
+            customDialog.msg.setVisibility(View.GONE);
+            customDialog.msg.setText("");
+        }
         customDialog.show();
+    }
+
+    public void show() {
+        show(null);
     }
 
     public void dismiss() {
         customDialog.dismiss();
+    }
+
+    public Observable<RxDialogBean> rxShow() {
+        return rxShow(null);
+    }
+
+    public Observable<RxDialogBean> rxShow(final String msg) {
+        return Observable.create(new Observable.OnSubscribe<RxDialogBean>() {
+            @Override
+            public void call(final Subscriber<? super RxDialogBean> subscriber) {
+                customDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialogInterface) {
+                        subscriber.onNext(new RxDialogBean(RxDialogBean.RX_USER_CLICK_CANCEL,customDialog));
+                        subscriber.onCompleted();
+                    }
+                });
+                show(msg);
+            }
+        });
     }
 
     private class CustomDialog extends Dialog {
