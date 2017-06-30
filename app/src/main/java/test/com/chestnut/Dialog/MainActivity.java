@@ -7,9 +7,11 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.chestnut.Common.ui.Toastc;
+import com.chestnut.Common.utils.LogUtils;
 import com.chestnut.Dialog.IconSimpleDialog.IconSimpleDialog;
 import com.chestnut.Dialog.IconSimpleDialog.Item;
 import com.chestnut.Dialog.LoadingDialog.LoadingDialog;
+import com.chestnut.Dialog.MsgDialog.EditMsgDialog;
 import com.chestnut.Dialog.MsgDialog.MsgDialog;
 import com.chestnut.Dialog.OnBtnClickListener;
 import com.chestnut.Dialog.RxDialogBean;
@@ -295,7 +297,33 @@ public class MainActivity extends AppCompatActivity {
                         });
             }
         });
-
+        findViewById(R.id.button15).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new EditMsgDialog(MainActivity.this)
+                        .addOneInput("姓名：")
+                        .addOneInput("学号：")
+                        .addOneInput("邮箱：")
+                        .setBtnOkListener(new EditMsgDialog.OnBtnClickListener() {
+                            @Override
+                            public void onButtonClick(Dialog dialog, String[] editTxt) {
+                                for (int i = 0; i < editTxt.length; i++) {
+                                    LogUtils.e(OpenLog,TAG,"txt:"+editTxt[i]);
+                                }
+                                dialog.dismiss();
+                            }
+                        })
+                        .setBtnCancelListener(new EditMsgDialog.OnBtnClickListener() {
+                            @Override
+                            public void onButtonClick(Dialog dialog, String[] editTxt) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .setCanceledOnTouchOutside(false)
+                        .setCancelable(false)
+                        .show();
+            }
+        });
     }
 
     private LoadingDialog loadingDialog;

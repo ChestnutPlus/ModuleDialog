@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@drawable/msg_touch_bg"
+    android:focusable="true"
+    android:clickable="true"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/txt_title"
+        android:text="Title"
+        android:paddingTop="23dp"
+        android:paddingStart="25dp"
+        android:paddingEnd="25dp"
+        android:textSize="18sp"
+        android:textColor="#787676"
+        android:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <!--<TextView-->
+        <!--android:layout_below="@id/txt_title"-->
+        <!--android:id="@+id/txt_msg"-->
+        <!--android:paddingTop="23dp"-->
+        <!--android:paddingBottom="20dp"-->
+        <!--android:paddingStart="30dp"-->
+        <!--android:paddingEnd="30dp"-->
+        <!--android:textSize="13sp"-->
+        <!--android:maxLines="3"-->
+        <!--android:textColor="@android:color/black"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="This is a simple message ..." />-->
+
+    <LinearLayout
+        android:id="@+id/layout_1"
+        android:orientation="vertical"
+        android:layout_below="@id/txt_title"
+        android:paddingStart="25dp"
+        android:paddingEnd="25dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <EditText
+            android:id="@+id/edit1"
+            android:visibility="gone"
+            android:gravity="bottom"
+            android:paddingBottom="8dp"
+            android:background="@drawable/edit_msg_dialog_bg"
+            android:textColorHint="@drawable/edit_msg_dialog_hint_color"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:maxLines="1"
+            android:hint=""
+            android:textSize="12sp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="40dp" />
+        <EditText
+            android:id="@+id/edit2"
+            android:visibility="gone"
+            android:gravity="bottom"
+            android:paddingBottom="8dp"
+            android:background="@drawable/edit_msg_dialog_bg"
+            android:textColorHint="@drawable/edit_msg_dialog_hint_color"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:maxLines="1"
+            android:hint=""
+            android:textSize="12sp"
+            android:layout_marginBottom="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="40dp" />
+        <EditText
+            android:id="@+id/edit3"
+            android:visibility="gone"
+            android:gravity="bottom"
+            android:paddingBottom="8dp"
+            android:background="@drawable/edit_msg_dialog_bg"
+            android:textColorHint="@drawable/edit_msg_dialog_hint_color"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:maxLines="1"
+            android:hint=""
+            android:textSize="12sp"
+            android:layout_width="match_parent"
+            android:layout_height="40dp" />
+    </LinearLayout>
+
+    <TextView
+        android:gravity="center"
+        android:focusable="true"
+        android:clickable="true"
+        android:background="@drawable/msg_touch_bg"
+        android:id="@+id/btn_ok"
+        android:layout_width="65dp"
+        android:layout_height="34dp"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/layout_1"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:textSize="12sp"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:textColor="@android:color/holo_green_dark"
+        android:visibility="visible"
+        android:maxLength="6"
+        android:maxLines="1"
+        android:textStyle="bold"
+        android:text="Ok" />
+
+    <TextView
+        android:gravity="center"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginEnd="85dp"
+        android:focusable="true"
+        android:clickable="true"
+        android:background="@drawable/msg_touch_bg"
+        android:id="@+id/btn_cancel"
+        android:layout_width="65dp"
+        android:layout_height="34dp"
+        android:layout_below="@+id/layout_1"
+        android:layout_alignParentEnd="true"
+        android:textSize="12sp"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:textColor="@android:color/darker_gray"
+        android:visibility="gone"
+        android:maxLength="6"
+        android:maxLines="1"
+        android:text="Cancel" />
+</RelativeLayout>
