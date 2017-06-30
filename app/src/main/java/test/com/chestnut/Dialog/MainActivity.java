@@ -324,6 +324,26 @@ public class MainActivity extends AppCompatActivity {
                         .show();
             }
         });
+        findViewById(R.id.button16).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new EditMsgDialog(MainActivity.this)
+                        .addOneInput("姓名：")
+                        .addOneInput("学号：")
+                        .addOneInput("邮箱：")
+                        .setCanceledOnTouchOutside(false)
+                        .setCancelable(false)
+                        .rxShow()
+                        .subscribe(new Action1<EditMsgDialog.RxEditMsgDialogBean>() {
+                            @Override
+                            public void call(EditMsgDialog.RxEditMsgDialogBean rxEditMsgDialogBean) {
+                                for (int i = 0; i < rxEditMsgDialogBean.editTxt.length; i++) {
+                                    LogUtils.e(OpenLog,TAG,"txt:"+rxEditMsgDialogBean.editTxt[i]);
+                                }
+                            }
+                        });
+            }
+        });
     }
 
     private LoadingDialog loadingDialog;

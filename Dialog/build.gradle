@@ -8,8 +8,9 @@ android {
         minSdkVersion 19
         targetSdkVersion 25
         versionCode 2
-        versionName "1.0"
-        /**
+        versionName "1.0.0"
+        /*
+        1.0.0
             1:  2017年6月24日18:30:38：完成基本功能
             2：  2017年6月25日18:48:29：
                 1）增加DialogLoading的rxShow和其他一些方法

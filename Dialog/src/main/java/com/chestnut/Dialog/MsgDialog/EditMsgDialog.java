@@ -2,19 +2,24 @@ package com.chestnut.Dialog.MsgDialog;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.chestnut.Dialog.R;
-import com.chestnut.Dialog.RxDialogBean;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 import rx.Observable;
+import rx.Subscriber;
 
 /**
  * <pre>
@@ -41,8 +46,25 @@ public class EditMsgDialog{
         customDialog.show();
     }
 
-    public Observable<RxDialogBean> rxShow() {
-        return null;
+    public Observable<RxEditMsgDialogBean> rxShow() {
+        return Observable.create(new Observable.OnSubscribe<RxEditMsgDialogBean>() {
+            @Override
+            public void call(final Subscriber<? super RxEditMsgDialogBean> subscriber) {
+                setBtnCancelListener(new OnBtnClickListener() {
+                    @Override
+                    public void onButtonClick(Dialog dialog, String[] editTxt) {
+                        subscriber.onNext(new RxEditMsgDialogBean(dialog, editTxt,RxEditMsgDialogBean.RX_USER_CLICK_CANCEL));
+                    }
+                });
+                setBtnOkListener(new OnBtnClickListener() {
+                    @Override
+                    public void onButtonClick(Dialog dialog, String[] editTxt) {
+                        subscriber.onNext(new RxEditMsgDialogBean(dialog, editTxt,RxEditMsgDialogBean.RX_USER_CLICK_OK));
+                    }
+                });
+                show();
+            }
+        });
     }
 
     public void dismiss() {
@@ -152,9 +174,38 @@ public class EditMsgDialog{
                 });
             }
         }
+
+        @Override
+        public void show() {
+            super.show();
+            Window dialogWindow = getWindow();
+            if (dialogWindow != null && dialogWindow.getAttributes() != null) {
+                WindowManager.LayoutParams lp = dialogWindow.getAttributes();
+                lp.y = lp.y - 150;
+                dialogWindow.setAttributes(lp);
+            }
+        }
     }
 
     public interface OnBtnClickListener {
         void onButtonClick(Dialog dialog,String[] editTxt);
+    }
+
+    public static class RxEditMsgDialogBean {
+        public Dialog dialog;
+        public String[] editTxt;
+        public int status;
+
+        public static final int RX_USER_CLICK_OK = -1;
+        public static final int RX_USER_CLICK_CANCEL = -2;
+        @IntDef({RX_USER_CLICK_OK,RX_USER_CLICK_CANCEL})
+        @Retention(RetentionPolicy.SOURCE)
+        private @interface Type {}
+
+        public RxEditMsgDialogBean(Dialog dialog, String[] editTxt, @Type int status) {
+            this.dialog = dialog;
+            this.editTxt = editTxt;
+            this.status = status;
+        }
     }
 }
