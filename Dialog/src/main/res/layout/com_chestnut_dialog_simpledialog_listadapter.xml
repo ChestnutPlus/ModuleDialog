@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ListView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@drawable/white_round_bg"
+    android:background="@drawable/msg_white_round_bg"
     android:id="@+id/listView"
     android:padding="3dp"
     android:layout_width="match_parent"

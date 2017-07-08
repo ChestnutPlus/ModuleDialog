@@ -7,7 +7,7 @@ android {
     defaultConfig {
         minSdkVersion 19
         targetSdkVersion 25
-        versionCode 3
+        versionCode 4
         versionName "1.0.1"
         /*
 
@@ -23,6 +23,7 @@ android {
             1.  增加EditMsgDialog
             2.  2017年7月5日11:04:03：更新ModulesCommon
             3.  2017年7月8日18:42:26：更新ModulesCommon：1.0.8
+            4.  修改了xml，避免资源名称冲突
 
          */
     }
