@@ -176,19 +176,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 new XAlertDialog(MainActivity.this,XAlertDialog.TYPE_SUCCESS)
                         .setTitle("title")
-                        .setBtnOkListener(new OnBtnClickListener() {
-                            @Override
-                            public void onButtonClick(Dialog dialog) {
-                                toast.setText("setBtnOkListener").show();
-                            }
-                        })
-                        .setBtnCancelListener(new OnBtnClickListener() {
-                            @Override
-                            public void onButtonClick(Dialog dialog) {
-                                toast.setText("onButtonClick").show();
-                            }
-                        })
                         .setMsg("洗洗就睡了空间的风口浪尖势力扩大解放了放假了深刻搭街坊拉萨角度来看分解落实贷款")
+                        .rxShowBtnCancel(true)
                         .rxShow()
                         .subscribe(new Action1<RxDialogBean>() {
                             @Override
@@ -230,6 +219,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 new XAlertDialog(MainActivity.this,XAlertDialog.TYPE_WARNING)
+                        .setIcon(R.drawable.activity_user_info_log_out_active)
                         .setTitle("Title")
                         .setBtnOkListener(new OnBtnClickListener() {
                             @Override

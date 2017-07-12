@@ -2,6 +2,7 @@ package com.chestnut.Dialog.XAlertDialog;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.view.Gravity;
@@ -12,6 +13,7 @@ import android.view.animation.AnimationSet;
 import android.view.animation.RotateAnimation;
 import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.chestnut.Dialog.OnBtnClickListener;
@@ -53,7 +55,8 @@ public class XAlertDialog implements XDialog<XAlertDialog>{
     /*变量*/
     private CustomDialog customDialog;
     private @ALERT_TYPE int ALERT_TYPE = TYPE_DEFAULT;
-    private Context context;
+    private boolean rxShowBtnOk = true;
+    private boolean rxShowBtnCancel = false;
 
     /*方法*/
     public XAlertDialog(@NonNull Context context) {
@@ -63,7 +66,6 @@ public class XAlertDialog implements XDialog<XAlertDialog>{
     public XAlertDialog(@NonNull Context context,@ALERT_TYPE int alertType) {
         customDialog = new CustomDialog(context);
         ALERT_TYPE = alertType;
-        this.context = context;
         if (customDialog.getWindow()!=null) {
             customDialog.getWindow().setWindowAnimations(R.style.XAlertDialog);
         }
@@ -74,23 +76,35 @@ public class XAlertDialog implements XDialog<XAlertDialog>{
         customDialog.show();
     }
 
+    public XAlertDialog rxShowBtnOk(boolean rxShowBtnOk) {
+        this.rxShowBtnOk = rxShowBtnOk;
+        return this;
+    }
+
+    public XAlertDialog rxShowBtnCancel(boolean rxShowBtnCancel) {
+        this.rxShowBtnCancel = rxShowBtnCancel;
+        return this;
+    }
+
     @Override
     public Observable<RxDialogBean> rxShow() {
         return Observable.create(new Observable.OnSubscribe<RxDialogBean>() {
             @Override
             public void call(final Subscriber<? super RxDialogBean> subscriber) {
-                setBtnCancelListener(new OnBtnClickListener() {
-                    @Override
-                    public void onButtonClick(Dialog dialog) {
-                        subscriber.onNext(new RxDialogBean(RxDialogBean.RX_USER_CLICK_CANCEL,dialog));
-                    }
-                });
-                setBtnOkListener(new OnBtnClickListener() {
-                    @Override
-                    public void onButtonClick(Dialog dialog) {
-                        subscriber.onNext(new RxDialogBean(RxDialogBean.RX_USER_CLICK_OK,dialog));
-                    }
-                });
+                if (rxShowBtnCancel)
+                    setBtnCancelListener(new OnBtnClickListener() {
+                        @Override
+                        public void onButtonClick(Dialog dialog) {
+                            subscriber.onNext(new RxDialogBean(RxDialogBean.RX_USER_CLICK_CANCEL,dialog));
+                        }
+                    });
+                if (rxShowBtnOk)
+                    setBtnOkListener(new OnBtnClickListener() {
+                        @Override
+                        public void onButtonClick(Dialog dialog) {
+                            subscriber.onNext(new RxDialogBean(RxDialogBean.RX_USER_CLICK_OK,dialog));
+                        }
+                    });
                 show();
             }
         });
@@ -169,9 +183,24 @@ public class XAlertDialog implements XDialog<XAlertDialog>{
         return this;
     }
 
+    public XAlertDialog setIcon(@DrawableRes int resId, int heightPx) {
+        ALERT_TYPE = TYPE_WARNING;
+        LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams)customDialog.linearLayout.getLayoutParams();
+        lp.height = heightPx<=0 ? LinearLayout.LayoutParams.WRAP_CONTENT : heightPx;
+        customDialog.linearLayout.setLayoutParams(lp);
+        customDialog.imageView.setVisibility(View.VISIBLE);
+        customDialog.imageView.setImageResource(resId);
+        return this;
+    }
+
+    public XAlertDialog setIcon(@DrawableRes int resId) {
+        setIcon(resId,-1);
+        return this;
+    }
+
     private void animationError() {
         customDialog.imageView.setImageResource(R.drawable.xdialog_error);
-        ScaleAnimation scaleAnimation = new ScaleAnimation(1.0f,2.0f,1.0f,1.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.0f);
+        ScaleAnimation scaleAnimation = new ScaleAnimation(1.0f,1.5f,1.0f,1.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.0f);
         scaleAnimation.setRepeatCount(1);
         scaleAnimation.setRepeatMode(Animation.REVERSE);
         scaleAnimation.setFillAfter(true);
@@ -194,6 +223,7 @@ public class XAlertDialog implements XDialog<XAlertDialog>{
         TextView msg;
         TextView btnOk;
         TextView btnCancel;
+        LinearLayout linearLayout;
         CustomDialog(@NonNull Context context) {
             super(context, R.style.SimpleDialog);
             setContentView(R.layout.com_chestnut_dialog_xalertdialog);
@@ -209,6 +239,20 @@ public class XAlertDialog implements XDialog<XAlertDialog>{
             msg = (TextView) findViewById(R.id.txt_content);
             btnOk = (TextView) findViewById(R.id.txt_ok);
             btnCancel = (TextView) findViewById(R.id.txt_cancel);
+            linearLayout = (LinearLayout) findViewById(R.id.layout_icon);
+            linearLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    switch (ALERT_TYPE) {
+                        case TYPE_ERROR:
+                            animationError();
+                            break;
+                        case TYPE_SUCCESS:
+                            animationSuccess();
+                            break;
+                    }
+                }
+            });
         }
 
         @Override

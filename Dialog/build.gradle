@@ -7,8 +7,8 @@ android {
     defaultConfig {
         minSdkVersion 19
         targetSdkVersion 25
-        versionCode 4
-        versionName "1.0.1"
+        versionCode 5
+        versionName "1.0.2"
         /*
 
         1.0.0
@@ -24,6 +24,10 @@ android {
             2.  2017年7月5日11:04:03：更新ModulesCommon
             3.  2017年7月8日18:42:26：更新ModulesCommon：1.0.8
             4.  修改了xml，避免资源名称冲突
+
+        1.0.2
+            5.  对 XAlertDialog 增加方法
+                微调 XAlertDialog 的UI
 
          */
     }
@@ -41,5 +45,5 @@ android {
 dependencies {
     compile 'com.android.support:appcompat-v7:25.3.1'
     // Core Base Library
-    compile 'com.github.ChestnutPlus:ModulesCommon:1.0.8'
+    compile 'com.github.ChestnutPlus:ModulesCommon:1.0.9'
 }
