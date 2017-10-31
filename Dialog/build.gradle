@@ -7,7 +7,7 @@ android {
     defaultConfig {
         minSdkVersion 19
         targetSdkVersion 25
-        versionCode 6
+        versionCode 7
         versionName "1.0.2"
         /*
 
@@ -30,6 +30,8 @@ android {
                 微调 XAlertDialog 的UI
             6.  ~:Common
                 ~:AndroidManifest
+
+            7.  修复：4.4中，点击bg不为圆角。
 
          */
     }
